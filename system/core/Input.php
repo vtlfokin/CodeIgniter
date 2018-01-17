@@ -140,7 +140,7 @@ class CI_Input {
 	* @access	public
 	* @param	string
 	* @param	bool
-	* @return	string
+	* @return	string|array
 	*/
 	function get($index = NULL, $xss_clean = FALSE)
 	{
@@ -168,7 +168,7 @@ class CI_Input {
 	* @access	public
 	* @param	string
 	* @param	bool
-	* @return	string
+	* @return	string|array
 	*/
 	function post($index = NULL, $xss_clean = FALSE)
 	{
@@ -194,10 +194,11 @@ class CI_Input {
 	/**
 	* Fetch an item from either the GET array or the POST
 	*
+	* @param string $index     The index key
+	* @param bool   $xss_clean XSS cleaning
+	*
 	* @access	public
-	* @param	string	The index key
-	* @param	bool	XSS cleaning
-	* @return	string
+	* @return	string|array
 	*/
 	function get_post($index = '', $xss_clean = FALSE)
 	{

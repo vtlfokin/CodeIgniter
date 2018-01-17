@@ -413,7 +413,7 @@ class CI_Loader {
 	 * @param	string
 	 * @param	array
 	 * @param	bool
-	 * @return	void
+	 * @return	void|string
 	 */
 	public function view($view, $vars = array(), $return = FALSE)
 	{
@@ -737,7 +737,7 @@ class CI_Loader {
 	 * variables made available to view files
 	 *
 	 * @param	array
-	 * @return	void
+	 * @return	string|void
 	 */
 	protected function _ci_load($_ci_data)
 	{

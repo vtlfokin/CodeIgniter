@@ -116,8 +116,8 @@ class CI_Encrypt {
 	 * message and key are the same.
 	 *
 	 * @access	public
-	 * @param	string	the string to encode
-	 * @param	string	the key
+	 * @param	string $string the string to encode
+	 * @param	string $key    the key
 	 * @return	string
 	 */
 	function encode($string, $key = '')

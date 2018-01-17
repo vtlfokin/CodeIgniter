@@ -182,10 +182,10 @@ class CI_Config {
 	 *
 	 *
 	 * @access	public
-	 * @param	string	the config item name
-	 * @param	string	the index name
+	 * @param	string $item  the config item name
+	 * @param	string $index the index name
 	 * @param	bool
-	 * @return	string
+	 * @return	string|array
 	 */
 	function item($item, $index = '')
 	{
