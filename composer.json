@@ -1,5 +1,6 @@
 {
   "name": "vtlfokin/CodeIgniter",
+  "type" : "library",
   "description": "Fork CodeIgniter2",
   "keywords": [
     "CodeIgniter2"
