@@ -1,0 +1,20 @@
+{
+  "name": "vtlfokin/CodeIgniter",
+  "description": "Fork CodeIgniter2",
+  "keywords": [
+    "CodeIgniter2"
+  ],
+  "homepage": "https://github.com/vtlfokin/CodeIgniter",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Fok",
+      "email": "vtlfokin@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Vtlfokin\\CodeIgniter\\": ""
+    }
+  }
+}
