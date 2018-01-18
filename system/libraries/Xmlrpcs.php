@@ -174,15 +174,21 @@ class CI_Xmlrpcs extends CI_Xmlrpc
 	 */
 	function parseRequest($data='')
 	{
-		global $HTTP_RAW_POST_DATA;
-
 		//-------------------------------------
 		//  Get Data
 		//-------------------------------------
 
 		if ($data == '')
 		{
-			$data = $HTTP_RAW_POST_DATA;
+			$ver = phpversion();
+			if ($ver[0] >= 5)
+			{
+				$data = file_get_contents('php://input');
+			}
+			else
+			{
+				$data = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : '';
+			}
 		}
 
 		//-------------------------------------
@@ -368,11 +374,11 @@ class CI_Xmlrpcs extends CI_Xmlrpc
 				if ($this->object === FALSE)
 				{
 					$CI =& get_instance();
-					return $CI->$method_parts['1']($m);
+					return $CI->{$method_parts['1']}($m);
 				}
 				else
 				{
-					return $this->object->$method_parts['1']($m);
+					return $this->object->{$method_parts['1']}($m);
 					//return call_user_func(array(&$method_parts['0'],$method_parts['1']), $m);
 				}
 			}
