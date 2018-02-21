@@ -214,7 +214,7 @@ class CI_Encrypt {
 	 * @access protected
 	 * @param string $data
 	 * @param string $key
-	 * @return string
+	 * @return string|false
 	 */
 	protected function openssl_decode($data, $key)
 	{
@@ -222,7 +222,7 @@ class CI_Encrypt {
 		$init_size = openssl_cipher_iv_length($this->_get_cipher());
 
 		if ($init_size > strlen($data)) {
-			return null;
+			return false;
 		}
 
 		$init_vect = substr($data, 0, $init_size);
