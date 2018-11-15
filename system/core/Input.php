@@ -70,7 +70,7 @@ class CI_Input {
 	/**
 	 * List of all HTTP request headers
 	 *
-	 * @var array
+	 * @var array|\ArrayAccess|\IteratorAggregate
 	 */
 	protected $headers			= array();
 
@@ -768,7 +768,7 @@ class CI_Input {
 	 *
 	 * @param	bool XSS cleaning
 	 *
-	 * @return array
+	 * @return array|\ArrayAccess|\IteratorAggregate
 	 */
 	public function request_headers($xss_clean = FALSE)
 	{
@@ -790,16 +790,142 @@ class CI_Input {
 			}
 		}
 
+		$tmp_headers = array();
 		// take SOME_HEADER and turn it into Some-Header
 		foreach ($headers as $key => $val)
 		{
 			$key = str_replace('_', ' ', strtolower($key));
 			$key = str_replace(' ', '-', ucwords($key));
 
-			$this->headers[$key] = $val;
+			$tmp_headers[$key] = $val;
 		}
+		$this->headers = $this->prepareHeadersData($tmp_headers);
 
 		return $this->headers;
+	}
+
+	/**
+	 * For PHP >= 7 replace array by object with array access to eliminate problems with letters case
+	 *
+	 * @param array $headers
+	 * @return array|\ArrayAccess|\IteratorAggregate
+	 */
+	private function prepareHeadersData(array $headers)
+	{
+		if (phpversion() >= '7.0.0') {
+			return new class($headers) implements \ArrayAccess, \IteratorAggregate
+			{
+				private $headers = [];
+
+				/**
+				 *  constructor.
+				 *
+				 * @param array $headers
+				 */
+				public function __construct(array $headers)
+				{
+					foreach ($headers as $key => $value) {
+						$key = is_string($key) ? mb_strtolower($key) : $key;
+						$this->headers[$key] = $value;
+					}
+				}
+
+				private function prepareOffset($value)
+				{
+					return is_string($value) ? mb_strtolower($value) : $value;
+				}
+
+				/**
+				 * Whether a offset exists
+				 * @link  https://php.net/manual/en/arrayaccess.offsetexists.php
+				 *
+				 * @param mixed $offset <p>
+				 *                      An offset to check for.
+				 *                      </p>
+				 *
+				 * @return boolean true on success or false on failure.
+				 * </p>
+				 * <p>
+				 * The return value will be casted to boolean if non-boolean was returned.
+				 * @since 5.0.0
+				 */
+				public function offsetExists($offset)
+				{
+					return is_string($offset) ? array_key_exists(mb_strtolower($offset), $this->headers) : array_key_exists($offset, $this->headers);
+				}
+
+				/**
+				 * Offset to retrieve
+				 * @link  https://php.net/manual/en/arrayaccess.offsetget.php
+				 *
+				 * @param mixed $offset <p>
+				 *                      The offset to retrieve.
+				 *                      </p>
+				 *
+				 * @return mixed Can return all value types.
+				 * @since 5.0.0
+				 */
+				public function offsetGet($offset)
+				{
+					$offset = $this->prepareOffset($offset);
+
+					return $this->headers[$offset] ?? null;
+				}
+
+				/**
+				 * Offset to set
+				 * @link  https://php.net/manual/en/arrayaccess.offsetset.php
+				 *
+				 * @param mixed $offset <p>
+				 *                      The offset to assign the value to.
+				 *                      </p>
+				 * @param mixed $value  <p>
+				 *                      The value to set.
+				 *                      </p>
+				 *
+				 * @return void
+				 * @since 5.0.0
+				 */
+				public function offsetSet($offset, $value)
+				{
+					$offset = $this->prepareOffset($offset);
+
+					$this->headers[$offset] = $value;
+				}
+
+				/**
+				 * Offset to unset
+				 * @link  https://php.net/manual/en/arrayaccess.offsetunset.php
+				 *
+				 * @param mixed $offset <p>
+				 *                      The offset to unset.
+				 *                      </p>
+				 *
+				 * @return void
+				 * @since 5.0.0
+				 */
+				public function offsetUnset($offset)
+				{
+					$offset = $this->prepareOffset($offset);
+
+					unset($this->headers[$offset]);
+				}
+
+				/**
+				 * Retrieve an external iterator
+				 * @link https://php.net/manual/en/iteratoraggregate.getiterator.php
+				 * @return Traversable An instance of an object implementing <b>Iterator</b> or
+				 * <b>Traversable</b>
+				 * @since 5.0.0
+				 */
+				public function getIterator()
+				{
+					return new \ArrayObject($this->headers);
+				}
+			};
+		} else {
+			return $headers;
+		}
 	}
 
 	// --------------------------------------------------------------------
