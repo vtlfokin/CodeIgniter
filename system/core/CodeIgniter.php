@@ -108,7 +108,7 @@
  *  Start the timer... tick tock tick tock...
  * ------------------------------------------------------
  */
-	$BM =& load_class('Benchmark', 'core');
+	$GLOBALS['BM'] = $BM =& load_class('Benchmark', 'core');
 	$BM->mark('total_execution_time_start');
 	$BM->mark('loading_time:_base_classes_start');
 
@@ -117,7 +117,7 @@
  *  Instantiate the hooks class
  * ------------------------------------------------------
  */
-	$EXT =& load_class('Hooks', 'core');
+	$GLOBALS['EXT'] = $EXT =& load_class('Hooks', 'core');
 
 /*
  * ------------------------------------------------------
@@ -131,7 +131,7 @@
  *  Instantiate the config class
  * ------------------------------------------------------
  */
-	$CFG =& load_class('Config', 'core');
+	$GLOBALS['CFG'] = $CFG =& load_class('Config', BASEPATH . 'core');
 
 	// Do we have any manually set config items in the index.php file?
 	if (isset($assign_to_config))
@@ -151,21 +151,21 @@
  *
  */
 
-	$UNI =& load_class('Utf8', 'core');
+	$GLOBALS['UNI'] = $UNI =& load_class('Utf8', 'core');
 
 /*
  * ------------------------------------------------------
  *  Instantiate the URI class
  * ------------------------------------------------------
  */
-	$URI =& load_class('URI', 'core');
+	$GLOBALS['URI'] = $URI =& load_class('URI', 'core');
 
 /*
  * ------------------------------------------------------
  *  Instantiate the routing class and set the routing
  * ------------------------------------------------------
  */
-	$RTR =& load_class('Router', 'core');
+	$GLOBALS['RTR'] = $RTR =& load_class('Router', 'core');
 	$RTR->_set_routing();
 
 	// Set any routing overrides that may exist in the main index file
@@ -179,7 +179,7 @@
  *  Instantiate the output class
  * ------------------------------------------------------
  */
-	$OUT =& load_class('Output', 'core');
+	$GLOBALS['OUT'] = $OUT =& load_class('Output', 'core');
 
 /*
  * ------------------------------------------------------
@@ -199,7 +199,7 @@
  * Load the security class for xss and csrf support
  * -----------------------------------------------------
  */
-	$SEC =& load_class('Security', 'core');
+	$GLOBALS['SEC'] = $SEC =& load_class('Security', 'core');
 
 /*
  * ------------------------------------------------------
@@ -213,7 +213,7 @@
  *  Load the Language class
  * ------------------------------------------------------
  */
-	$LANG =& load_class('Lang', 'core');
+	$GLOBALS['LANG'] = $LANG =& load_class('Lang', 'core');
 
 /*
  * ------------------------------------------------------
